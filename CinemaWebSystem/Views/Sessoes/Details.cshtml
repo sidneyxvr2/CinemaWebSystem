@@ -1,0 +1,48 @@
+﻿@model CinemaWebSystem.Models.Sessao
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Sessao</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Horario)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horario)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Preco)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Preco)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ativa)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ativa)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Filme)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Filme.Titulo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sala)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sala.Nome)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.SessaoId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

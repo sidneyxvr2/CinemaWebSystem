@@ -1,0 +1,11 @@
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\bin\Debug\netcoreapp2.0\CinemaWebSystem.deps.json
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\bin\Debug\netcoreapp2.0\CinemaWebSystem.runtimeconfig.json
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\bin\Debug\netcoreapp2.0\CinemaWebSystem.runtimeconfig.dev.json
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\bin\Debug\netcoreapp2.0\CinemaWebSystem.dll
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\bin\Debug\netcoreapp2.0\CinemaWebSystem.pdb
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\obj\Debug\netcoreapp2.0\CinemaWebSystem.csprojAssemblyReference.cache
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\obj\Debug\netcoreapp2.0\CinemaWebSystem.csproj.CoreCompileInputs.cache
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\obj\Debug\netcoreapp2.0\CinemaWebSystem.AssemblyInfoInputs.cache
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\obj\Debug\netcoreapp2.0\CinemaWebSystem.AssemblyInfo.cs
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\obj\Debug\netcoreapp2.0\CinemaWebSystem.dll
+C:\Users\sidne\source\repos\CinemaWebSystem\CinemaWebSystem\obj\Debug\netcoreapp2.0\CinemaWebSystem.pdb
