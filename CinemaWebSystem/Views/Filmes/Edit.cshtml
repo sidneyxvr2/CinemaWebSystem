@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="FilmeId" />
             <div class="form-group">
@@ -20,12 +20,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Imagem" class="control-label"></label>
-                <input asp-for="Imagem" class="form-control" />
+                <input type="file" asp-for="Imagem" class="form-control" />
                 <span asp-validation-for="Imagem" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Classificacao" class="control-label"></label>
-                <select asp-for="Classificacao" class="form-control"></select>
+                <select asp-for="Classificacao" asp-items="@new @SelectList(Classificacao.Classificacoes(), "Key", "Value")" class="form-control"></select>
                 <span asp-validation-for="Classificacao" class="text-danger"></span>
             </div>
             <div class="form-group">

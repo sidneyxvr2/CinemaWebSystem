@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +7,7 @@ using CinemaWebSystem.Data;
 using CinemaWebSystem.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Drawing;
 
 namespace CinemaWebSystem.Controllers
 {
@@ -28,25 +27,6 @@ namespace CinemaWebSystem.Controllers
             return View(await cinemaDbContext.ToListAsync());
         }
 
-        // GET: Filmes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var filme = await _context.Filmes
-                .Include(f => f.Genero)
-                .SingleOrDefaultAsync(m => m.FilmeId == id);
-            if (filme == null)
-            {
-                return NotFound();
-            }
-
-            return View(filme);
-        }
-
         // GET: Filmes/Create
         public IActionResult Create()
         {
@@ -59,17 +39,17 @@ namespace CinemaWebSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FilmeId,Titulo,Imagem,Classificacao,GeneroId")] Filme filme, List<IFormFile> Imagem)
-        {
-            foreach(var item in Imagem)
+        public async Task<IActionResult> Create([Bind("FilmeId,Titulo,Classificacao,GeneroId,Ativa")] Filme filme, IFormFile Imagem)
+        { 
+            if(Imagem != null && Imagem.Length > 0)
             {
-                if(item.Length > 0)
+                
+                using (var stream = new MemoryStream())
                 {
-                    using (var stream = new MemoryStream())
-                    {
-                        await item.CopyToAsync(stream);
-                        filme.Imagem = stream.ToArray();
-                    }
+                    await Imagem.CopyToAsync(stream);
+                    Bitmap img = new Bitmap(stream);
+                    var v = img.Size;
+                    filme.Imagem = stream.ToArray();
                 }
             }
             if (ModelState.IsValid)
@@ -104,7 +84,7 @@ namespace CinemaWebSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FilmeId,Titulo,Imagem,Classificacao,GeneroId")] Filme filme)
+        public async Task<IActionResult> Edit(int id, [Bind("FilmeId,Titulo,Classificacao,GeneroId,Ativa")] Filme filme, IFormFile Imagem)
         {
             if (id != filme.FilmeId)
             {
@@ -115,7 +95,22 @@ namespace CinemaWebSystem.Controllers
             {
                 try
                 {
-                    _context.Update(filme);
+                    if (Imagem != null && Imagem.Length > 0)
+                    {
+                        using (var stream = new MemoryStream())
+                        {
+                            await Imagem.CopyToAsync(stream);
+                            filme.Imagem = stream.ToArray();
+                        }
+                        _context.Update(filme);
+                    }
+                    else
+                    {
+                        _context.Entry(filme).State = EntityState.Unchanged;
+                        _context.Entry(filme).Property("Titulo").IsModified = true;
+                        _context.Entry(filme).Property("Classificacao").IsModified = true;
+                        _context.Entry(filme).Property("GeneroId").IsModified = true;
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

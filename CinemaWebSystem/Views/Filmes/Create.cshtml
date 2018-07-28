@@ -19,17 +19,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="Imagem" class="control-label"></label>
-                <input type="file" asp-for="Imagem" class="form-control" />
+                <input asp-for="Imagem" type="file" class="form-control"/>
                 <span asp-validation-for="Imagem" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Classificacao" class="control-label"></label>
-                <select asp-for="Classificacao" class="form-control" asp-items="@new SelectList(Enum.GetValues(typeof(Classificacao)))"></select>
+                <select asp-for="Classificacao" asp-items="@new @SelectList(Classificacao.Classificacoes(), "Key", "Value")" class="form-control"></select>
                 <span asp-validation-for="Classificacao" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GeneroId" class="control-label"></label>
-                <select asp-for="GeneroId" class ="form-control" asp-items="ViewBag.GeneroId"></select>
+                <select asp-for="GeneroId" class="form-control" asp-items="ViewBag.GeneroId"></select>
+                <a asp-area="" asp-controller="Generos" asp-action="Index">Gêneros</a>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

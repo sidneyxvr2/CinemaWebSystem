@@ -48,7 +48,7 @@ namespace CinemaWebSystem.Controllers
         // GET: Salas/Create
         public IActionResult Create()
         {
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Cidade");
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace CinemaWebSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Cidade", sala.CinemaId);
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome", sala.CinemaId);
             return View(sala);
         }
 
@@ -82,7 +82,7 @@ namespace CinemaWebSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Cidade", sala.CinemaId);
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome", sala.CinemaId);
             return View(sala);
         }
 
@@ -118,7 +118,7 @@ namespace CinemaWebSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Cidade", sala.CinemaId);
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome", sala.CinemaId);
             return View(sala);
         }
 

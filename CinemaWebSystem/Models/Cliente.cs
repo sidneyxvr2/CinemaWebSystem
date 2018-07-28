@@ -33,13 +33,25 @@ namespace CinemaWebSystem.Models
 
         [Required]
         [Compare("Senha", ErrorMessage = "As Senha Não Correspondem")]
+        [Display(Name = "Confirme sua Senha")]
         [DataType(DataType.Password)]
         public string SenhaCofirmada { get; set; }
 
-        public Estudante Estudante { get; set; } = Estudante.Nao;
+        public bool Estudante { get; set; }
+
+        public Ativa Ativa { get; set; } = Ativa.Sim;
 
         public virtual ICollection<Venda> Vendas { get; set; }
     }
 
-    public enum Estudante { Sim, Nao };
+    public class Estudante
+    {
+        public static Dictionary<bool, string> Estudantes ()
+        {
+            Dictionary<bool, string> d = new Dictionary<bool, string>();
+            d.Add(false, "Não");
+            d.Add(true, "Sim");
+            return d;
+        }
+    }
 }

@@ -26,6 +26,8 @@ namespace CinemaWebSystem.Migrations
                     b.Property<int>("AssentoId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Ativa");
+
                     b.Property<string>("Fila")
                         .IsRequired()
                         .HasMaxLength(3);
@@ -46,19 +48,26 @@ namespace CinemaWebSystem.Migrations
                     b.Property<int>("CinemaId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Ativa");
+
+                    b.Property<string>("Bairro")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Cep");
+
                     b.Property<string>("Cidade")
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Localizacao")
-                        .HasMaxLength(50);
+                    b.Property<int>("Estado");
 
                     b.Property<string>("Nome")
                         .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Numero");
+
+                    b.Property<string>("Rua")
                         .HasMaxLength(50);
 
                     b.HasKey("CinemaId");
@@ -71,12 +80,14 @@ namespace CinemaWebSystem.Migrations
                     b.Property<int>("ClienteId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Ativa");
+
                     b.Property<DateTime>("DataNascimento");
 
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<int>("Estudante");
+                    b.Property<bool>("Estudante");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -98,6 +109,8 @@ namespace CinemaWebSystem.Migrations
                     b.Property<int>("FilmeId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Ativa");
+
                     b.Property<int>("Classificacao");
 
                     b.Property<int>("GeneroId");
@@ -106,7 +119,7 @@ namespace CinemaWebSystem.Migrations
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasMaxLength(25);
+                        .HasMaxLength(60);
 
                     b.HasKey("FilmeId");
 
@@ -136,7 +149,7 @@ namespace CinemaWebSystem.Migrations
 
                     b.Property<int>("AssentoId");
 
-                    b.Property<int>("Estudante");
+                    b.Property<bool>("Estudante");
 
                     b.Property<int>("SessaoId");
 
@@ -182,6 +195,8 @@ namespace CinemaWebSystem.Migrations
 
                     b.Property<int>("Ativa");
 
+                    b.Property<int>("CinemaId");
+
                     b.Property<int>("FilmeId");
 
                     b.Property<DateTime>("Horario");
@@ -191,6 +206,8 @@ namespace CinemaWebSystem.Migrations
                     b.Property<int>("SalaId");
 
                     b.HasKey("SessaoId");
+
+                    b.HasIndex("CinemaId");
 
                     b.HasIndex("FilmeId");
 
@@ -209,6 +226,10 @@ namespace CinemaWebSystem.Migrations
                     b.Property<int>("ClienteId");
 
                     b.Property<DateTime>("Data");
+
+                    b.Property<int>("Inteira");
+
+                    b.Property<int>("Meia");
 
                     b.Property<int>("SessaoId");
 
@@ -267,6 +288,11 @@ namespace CinemaWebSystem.Migrations
 
             modelBuilder.Entity("CinemaWebSystem.Models.Sessao", b =>
                 {
+                    b.HasOne("CinemaWebSystem.Models.Cinema", "Cinema")
+                        .WithMany("Sessoes")
+                        .HasForeignKey("CinemaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("CinemaWebSystem.Models.Filme", "Filme")
                         .WithMany("Sessoes")
                         .HasForeignKey("FilmeId")

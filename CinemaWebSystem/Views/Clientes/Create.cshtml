@@ -22,6 +22,7 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
                 <label asp-for="DataNascimento" class="control-label"></label>
                 <input asp-for="DataNascimento" class="form-control" />
@@ -39,7 +40,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Estudante" class="control-label"></label>
-                <select asp-for="Estudante" class="form-control" asp-items="@new @SelectList(Enum.GetValues(typeof(Estudante)))"></select>
+                <select asp-for="Estudante" asp-items="@new @SelectList(Estudante.Estudantes(), "Key", "Value")" class="form-control"></select>
                 <span asp-validation-for="Estudante" class="text-danger"></span>
             </div>
             <div class="form-group">

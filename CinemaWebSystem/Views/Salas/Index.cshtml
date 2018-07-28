@@ -34,11 +34,10 @@
                 @Html.DisplayFor(modelItem => item.QuantidadeAssentos)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cinema.Cidade)
+                @Html.DisplayFor(modelItem => item.Cinema.Nome)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SalaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SalaId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.SalaId">Delete</a>
             </td>
         </tr>

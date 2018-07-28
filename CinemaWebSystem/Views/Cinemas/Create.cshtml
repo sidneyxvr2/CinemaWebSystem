@@ -17,21 +17,41 @@
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
+            <div class="row">
+                <div class="form-group col-sm-8 col-xs-8">
+                    <label asp-for="Cep" class="control-label"></label>
+                    <input asp-for="Cep" class="form-control" id="Cep" />
+                    <span asp-validation-for="Cep" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4 col-xs-4">
+                    <label asp-for="Estado" class="control-label"></label>
+                    <select asp-for="Estado" asp-items="@new @SelectList(Estados.SiglaEstados(), "Key", "Value")" class="form-control" id="uf"></select>
+                    <span asp-validation-for="Estado" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Cidade" class="control-label"></label>
-                <input asp-for="Cidade" class="form-control" />
+                <input asp-for="Cidade" class="form-control" id="cidade" />
                 <span asp-validation-for="Cidade" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Localizacao" class="control-label"></label>
-                <input asp-for="Localizacao" class="form-control" />
-                <span asp-validation-for="Localizacao" class="text-danger"></span>
+                <label asp-for="Bairro" class="control-label"></label>
+                <input asp-for="Bairro" class="form-control" id="bairro" />
+                <span asp-validation-for="Bairro" class="text-danger"></span>
             </div>
+            <div class="row">
+                <div class="form-group col-sm-8 col-xs-8">
+                    <label asp-for="Rua" class="control-label"></label>
+                    <input asp-for="Rua" class="form-control" id="rua" />
+                    <span asp-validation-for="Rua" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4 col-xs-4">
+                    <label asp-for="Numero" class="control-label"></label>
+                    <input asp-for="Numero" class="form-control" />
+                    <span asp-validation-for="Numero" class="text-danger"></span>
+                </div>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -45,4 +65,69 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $("#Cep")
+                //.keyup(function () {
+                //    if ($(this).val().length == 2) {
+                //        $(this).val($(this).val() + ".");
+                //    }
+                //    if ($(this).val().length == 6) {
+                //        $(this).val($(this).val() + "-")
+                //    }
+                //    if ($(this).val().length > 10) {
+                //        $(this).val($(this).val().substr(0, 10))
+                //    }
+                //})
+                .blur(function () {
+                    var cep = $("#Cep").val()
+                    if ($(this).val().length == 8) {
+                        if (cep != "") {
+
+                            //Expressão regular para validar o CEP.
+                            var validacep = /^[0-9]{8}$/;
+
+                            //Valida o formato do CEP.
+                            if (validacep.test(cep)) {
+                                //Preenche os campos com "..." enquanto consulta webservice.
+                                $("#rua").val("...");
+                                $("#bairro").val("...");
+                                $("#cidade").val("...");
+                                $("#uf").val("...");
+                                //$("#ibge").val("...");
+
+                                //Consulta o webservice viacep.com.br/
+                                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                                    if (!("erro" in dados)) {
+                                        //Atualiza os campos com os valores da consulta.
+                                        $("#rua").val(dados.logradouro);
+                                        $("#bairro").val(dados.bairro);
+                                        $("#cidade").val(dados.localidade);
+                                        $("#uf option:contains(" + dados.uf + ")").attr("selected", "selected");
+                                        //$("#uf").val(dados.uf);
+                                        //$("#ibge").val(dados.ibge);
+                                    } //end if.
+                                    else {
+                                        //CEP pesquisado não foi encontrado.
+                                        limpa_formulário_cep();
+                                        alert("CEP não encontrado.");
+                                    }
+                                });
+                            } //end if.
+                            else {
+                                //cep é inválido.
+                                limpa_formulário_cep();
+                                alert("Formato de CEP inválido.");
+                            }
+                        } //end if.
+                        else {
+                            //cep sem valor, limpa formulário.
+                            limpa_formulário_cep();
+                        }
+
+                    }
+                })
+        })
+    </script>
 }

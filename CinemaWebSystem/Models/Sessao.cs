@@ -15,9 +15,8 @@ namespace CinemaWebSystem.Models
         [Display(Name = "Data e Horário da Sessão")]
         [DataType(DataType.DateTime)]
         public DateTime Horario { get; set; }
-
-        [Required]
-        //[RegularExpression(@"([0-9]{1,3}\,[0-9]{2})?")]
+        
+        [DataType(DataType.Currency)]
         public decimal Preco { get; set; }
 
         public Ativa Ativa { get; set; } = Ativa.Sim;
@@ -32,7 +31,13 @@ namespace CinemaWebSystem.Models
         public int SalaId { get; set; }
         public Sala Sala { get; set; }
 
+        [Required]
+        [Display(Name = "Cinema")]
+        public int CinemaId { get; set; }
+        public Cinema Cinema { get; set; }
+
         public virtual ICollection<Venda> Vendas { get; set; }
         public virtual ICollection<Ingresso> Ingressos { get; set; }
+        
     }
 }

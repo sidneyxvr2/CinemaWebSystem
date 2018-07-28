@@ -18,6 +18,6 @@ namespace CinemaWebSystem.Models
         public int VendaId { get; set; }
         public Venda Venda { get; set; }
 
-        public Estudante Estudante { get; set; }
+        public bool Estudante { get; set; }
     }
 }

@@ -25,6 +25,8 @@ namespace CinemaWebSystem.Models
         public int SalaId { get; set; }
         public Sala Sala { get; set; }
 
+        public Ativa Ativa { get; set; } = Ativa.Sim;
+
         public ICollection<Ingresso> Ingressos { get; set; }
     }
 }

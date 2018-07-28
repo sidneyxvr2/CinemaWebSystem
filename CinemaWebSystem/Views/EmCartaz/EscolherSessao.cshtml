@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CinemaWebSystem.Models.Sessao>
+@{
+    ViewData["Title"] = "EscolherSessao";
+}
+
+<h2>Escolher Sessão</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Filme)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Horario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cinema)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sala)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.Filme.Titulo)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Horario)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Preco)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Cinema.Nome)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Sala.Nome)
+            </th>
+            <th>
+                <a asp-action="ComprarIngresso" asp-route-id="@item.SessaoId">Comprar</a>
+            </th>
+        </tr>
+        }
+           
+        </tbody>
+
+</table>

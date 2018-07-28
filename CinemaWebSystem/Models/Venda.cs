@@ -13,9 +13,16 @@ namespace CinemaWebSystem.Models
 
         [Required]
         [Display(Name = "Cartão")]
-        public Cartao Cartao { get; set; }
+        public int Cartao { get; set; }
+
+        [Range(0, 4)]
+        public int Meia { get; set; }
+
+        [Range(0, 4)]
+        public int Inteira { get; set; }
 
         [Display(Name = "Valor Total")]
+        [DataType(DataType.Currency)]
         public decimal ValorTotal { get; set; }
 
         [DataType(DataType.Date)]
@@ -32,5 +39,14 @@ namespace CinemaWebSystem.Models
         public ICollection<Ingresso> Ingressos { get; set; }
     }
 
-    public enum Cartao { Credito, Debito }
+    public class Cartao
+    {
+        public static Dictionary<int, string> Cartoes()
+        {
+            Dictionary<int, string> d = new Dictionary<int, string>();
+            d.Add(1, "Cartão Crédito");
+            d.Add(2, "Cartão Débito");
+            return d;
+        }
+    }
 }

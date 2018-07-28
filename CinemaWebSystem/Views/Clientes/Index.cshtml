@@ -40,11 +40,10 @@
                 @Html.DisplayFor(modelItem => item.DataNascimento)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Estudante)
+                @Html.DisplayFor(modelItem => Estudante.Estudantes()[item.Estudante])
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ClienteId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ClienteId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ClienteId">Delete</a>
             </td>
         </tr>

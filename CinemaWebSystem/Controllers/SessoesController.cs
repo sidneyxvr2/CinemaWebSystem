@@ -22,7 +22,7 @@ namespace CinemaWebSystem.Controllers
         // GET: Sessoes
         public async Task<IActionResult> Index()
         {
-            var cinemaDbContext = _context.Sessoes.Include(s => s.Filme).Include(s => s.Sala);
+            var cinemaDbContext = _context.Sessoes.Include(s => s.Cinema).Include(s => s.Filme).Include(s => s.Sala);
             return View(await cinemaDbContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace CinemaWebSystem.Controllers
             }
 
             var sessao = await _context.Sessoes
+                .Include(s => s.Cinema)
                 .Include(s => s.Filme)
                 .Include(s => s.Sala)
                 .SingleOrDefaultAsync(m => m.SessaoId == id);
@@ -49,8 +50,9 @@ namespace CinemaWebSystem.Controllers
         // GET: Sessoes/Create
         public IActionResult Create()
         {
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome");
             ViewData["FilmeId"] = new SelectList(_context.Filmes, "FilmeId", "Titulo");
-            ViewData["SalaId"] = new SelectList(_context.Salas, "SalaId", "Nome");
+            //ViewData["SalaId"] = new SelectList(_context.Salas, "SalaId", "Nome");
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace CinemaWebSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SessaoId,Horario,Preco,Ativa,FilmeId,SalaId")] Sessao sessao)
+        public async Task<IActionResult> Create([Bind("SessaoId,Horario,Preco,Ativa,FilmeId,SalaId,CinemaId")] Sessao sessao)
         {
             if (ModelState.IsValid)
             {
@@ -67,8 +69,9 @@ namespace CinemaWebSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome", sessao.CinemaId);
             ViewData["FilmeId"] = new SelectList(_context.Filmes, "FilmeId", "Titulo", sessao.FilmeId);
-            ViewData["SalaId"] = new SelectList(_context.Salas, "SalaId", "Nome", sessao.SalaId);
+            //ViewData["SalaId"] = new SelectList(_context.Salas, "SalaId", "Nome", sessao.SalaId);
             return View(sessao);
         }
 
@@ -85,8 +88,8 @@ namespace CinemaWebSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome", sessao.CinemaId);
             ViewData["FilmeId"] = new SelectList(_context.Filmes, "FilmeId", "Titulo", sessao.FilmeId);
-            ViewData["SalaId"] = new SelectList(_context.Salas, "SalaId", "Nome", sessao.SalaId);
             return View(sessao);
         }
 
@@ -95,7 +98,7 @@ namespace CinemaWebSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SessaoId,Horario,Preco,Ativa,FilmeId,SalaId")] Sessao sessao)
+        public async Task<IActionResult> Edit(int id, [Bind("SessaoId,Horario,Preco,Ativa,FilmeId,SalaId,CinemaId")] Sessao sessao)
         {
             if (id != sessao.SessaoId)
             {
@@ -122,6 +125,7 @@ namespace CinemaWebSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Nome", sessao.CinemaId);
             ViewData["FilmeId"] = new SelectList(_context.Filmes, "FilmeId", "Titulo", sessao.FilmeId);
             ViewData["SalaId"] = new SelectList(_context.Salas, "SalaId", "Nome", sessao.SalaId);
             return View(sessao);
@@ -136,6 +140,7 @@ namespace CinemaWebSystem.Controllers
             }
 
             var sessao = await _context.Sessoes
+                .Include(s => s.Cinema)
                 .Include(s => s.Filme)
                 .Include(s => s.Sala)
                 .SingleOrDefaultAsync(m => m.SessaoId == id);
@@ -161,6 +166,11 @@ namespace CinemaWebSystem.Controllers
         private bool SessaoExists(int id)
         {
             return _context.Sessoes.Any(e => e.SessaoId == id);
+        }
+
+        public JsonResult Salas(int CinemaId)
+        {
+            return Json(new SelectList(_context.Salas.Where(i => i.CinemaId == CinemaId), "SalaId", "Nome"));
         }
     }
 }

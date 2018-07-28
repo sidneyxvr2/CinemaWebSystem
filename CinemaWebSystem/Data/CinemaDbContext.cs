@@ -21,10 +21,13 @@ namespace CinemaWebSystem.Data
                              .SelectMany(t => t.GetForeignKeys())
                              .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
 
+
             foreach (var fk in cascadeFKs)
             {
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+
             base.OnModelCreating(builder);
         }
 

@@ -1,0 +1,83 @@
+﻿@model CinemaWebSystem.Models.Venda
+@{
+    ViewData["Title"] = "ComprarIngresso";
+}
+
+<h2>ComprarIngresso</h2>
+
+<div class="row">
+    <div class="col-sm-3">
+        @{
+            if (ViewBag.Sessao.Filme.Imagem != null)
+            {
+                var base64 = Convert.ToBase64String(ViewBag.Sessao.Filme.Imagem);
+                var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                <img src="@imgsrc" class="img-thumbnail img-fluid" style="max-width:175px" />
+                <h5>@ViewBag.Sessao.Filme.Titulo</h5>
+                <br />
+                <img src="@Classificacao.ClassificacaoImagens()[ViewBag.Sessao.Filme.Classificacao]" style="max-width: 30px; padding-bottom: 10px" />
+            }
+        }
+    </div>
+    <div class="col-sm-3">
+        <label asp-for="Sessao.Horario" class="control-label">@ViewBag.Sessao.Horario</label><br />
+        <label asp-for="Sessao.Horario" class="control-label">@ViewBag.Sessao.SessaoId</label><br />
+        <label asp-for="Sessao.Preco" class="control-label">@ViewBag.Sessao.Preco</label><br />
+        <label asp-for="Sessao.Cinema" class="control-label">@ViewBag.Sessao.Cinema.Nome</label><br />
+        <label asp-for="Sessao.Sala" class="control-label">@ViewBag.Sessao.Sala.Nome</label>
+        <form asp-action="ComprarIngresso">
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SessaoId"/>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label asp-for="Meia" class="control-label"></label>
+                    <input asp-for="Meia" class="form-control" id="meia" />
+                    <span asp-validation-for="Meia"></span>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label asp-for="Inteira" class="control-label"></label>
+                    <input asp-for="Inteira" class="form-control" id="inteira" />
+                    <span asp-validation-for="Inteira"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-5">
+                    <label asp-for="ValorTotal" class="control-label"></label>
+                    <input asp-for="ValorTotal" class="form-control" id="valorTotal" readonly/>
+                    <span asp-validation-for="ValorTotal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-7">
+                    <label asp-for="Cartao" class="control-label"></label>
+                    <select asp-for="Cartao" asp-items="@new @SelectList(Cartao.Cartoes(), "Key", "Value")" class="form-control"></select>
+                    <span asp-validation-for="Cartao" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Comprar" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $("#meia").val("0");
+            $("#inteira").val("0");
+            $("#meia").change(calculo);
+            $("#inteira").change(calculo);
+        })
+        
+        function calculo() {
+            if (parseInt($("#meia").val()) + parseInt($("#inteira").val()) > 4) {
+                alert("Quantidade Máxima Permitida 4");
+                $(this).val(0)
+                return;
+            }
+            var preco = parseFloat( @ViewBag.Sessao.Preco );
+            $("#valorTotal").val(preco * (parseInt($("#meia").val()) / 2 + parseInt($("#inteira").val())));
+        }
+    </script>
+}   

@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Create";
 }
-
 <h2>Create</h2>
 
 <h4>Sessao</h4>
@@ -24,11 +23,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="FilmeId" class="control-label"></label>
-                <select asp-for="FilmeId" class ="form-control" asp-items="ViewBag.FilmeId"></select>
+                <select asp-for="FilmeId" class="form-control" asp-items="ViewBag.FilmeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CinemaId" class="control-label"></label>
+                <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaId" id="CinemaId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="SalaId" class="control-label"></label>
-                <select asp-for="SalaId" class ="form-control" asp-items="ViewBag.SalaId"></select>
+                <select asp-for="SalaId" class="form-control" asp-items="ViewBag.SalaId" id="SalaId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -41,6 +44,29 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    $(function () {
+        var url = '@Url.Content("~/")' + "Sessoes/Salas";
+        var ddlsource = "#CinemaId";
+        $.get(url, { CinemaId: $(ddlsource).val() }, function (data) {
+            $("#SalaId").empty();
+            $.each(data, function (i, product) {
+                $("#SalaId").append("<option value='" + product.value + "'>" + product.text + "</option>");
+            });
+        }),
+        $("#CinemaId").change(function () {
+            $.get(url, { CinemaId: $(ddlsource).val() }, function (data) {
+                $("#SalaId").empty();
+                $.each(data, function (i, product) {
+                    $("#SalaId").append("<option value='" + product.value + "'>" + product.text + "</option>");
+                });
+            });
+        })
+            
+    });
+    </script>
 }

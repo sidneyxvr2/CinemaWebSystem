@@ -15,10 +15,14 @@ namespace CinemaWebSystem.Migrations
                 {
                     CinemaId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ativa = table.Column<int>(nullable: false),
+                    Bairro = table.Column<string>(maxLength: 50, nullable: true),
+                    Cep = table.Column<string>(nullable: true),
                     Cidade = table.Column<string>(maxLength: 50, nullable: false),
-                    Estado = table.Column<string>(maxLength: 50, nullable: false),
-                    Localizacao = table.Column<string>(maxLength: 50, nullable: true),
-                    Nome = table.Column<string>(maxLength: 50, nullable: false)
+                    Estado = table.Column<int>(nullable: false),
+                    Nome = table.Column<string>(maxLength: 50, nullable: false),
+                    Numero = table.Column<int>(nullable: false),
+                    Rua = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,9 +35,10 @@ namespace CinemaWebSystem.Migrations
                 {
                     ClienteId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ativa = table.Column<int>(nullable: false),
                     DataNascimento = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    Estudante = table.Column<int>(nullable: false),
+                    Estudante = table.Column<bool>(nullable: false),
                     Nome = table.Column<string>(maxLength: 50, nullable: false),
                     Senha = table.Column<string>(nullable: false),
                     SenhaCofirmada = table.Column<string>(nullable: false)
@@ -84,10 +89,11 @@ namespace CinemaWebSystem.Migrations
                 {
                     FilmeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ativa = table.Column<int>(nullable: false),
                     Classificacao = table.Column<int>(nullable: false),
                     GeneroId = table.Column<int>(nullable: false),
                     Imagem = table.Column<byte[]>(nullable: true),
-                    Titulo = table.Column<string>(maxLength: 25, nullable: false)
+                    Titulo = table.Column<string>(maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,6 +112,7 @@ namespace CinemaWebSystem.Migrations
                 {
                     AssentoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ativa = table.Column<int>(nullable: false),
                     Fila = table.Column<string>(maxLength: 3, nullable: false),
                     Numero = table.Column<int>(nullable: false),
                     SalaId = table.Column<int>(nullable: false)
@@ -128,6 +135,7 @@ namespace CinemaWebSystem.Migrations
                     SessaoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Ativa = table.Column<int>(nullable: false),
+                    CinemaId = table.Column<int>(nullable: false),
                     FilmeId = table.Column<int>(nullable: false),
                     Horario = table.Column<DateTime>(nullable: false),
                     Preco = table.Column<decimal>(nullable: false),
@@ -136,6 +144,12 @@ namespace CinemaWebSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sessoes", x => x.SessaoId);
+                    table.ForeignKey(
+                        name: "FK_Sessoes_Cinemas_CinemaId",
+                        column: x => x.CinemaId,
+                        principalTable: "Cinemas",
+                        principalColumn: "CinemaId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Sessoes_Filmes_FilmeId",
                         column: x => x.FilmeId,
@@ -159,6 +173,8 @@ namespace CinemaWebSystem.Migrations
                     Cartao = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
                     Data = table.Column<DateTime>(nullable: false),
+                    Inteira = table.Column<int>(nullable: false),
+                    Meia = table.Column<int>(nullable: false),
                     SessaoId = table.Column<int>(nullable: false),
                     ValorTotal = table.Column<decimal>(nullable: false)
                 },
@@ -186,7 +202,7 @@ namespace CinemaWebSystem.Migrations
                     IngressoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AssentoId = table.Column<int>(nullable: false),
-                    Estudante = table.Column<int>(nullable: false),
+                    Estudante = table.Column<bool>(nullable: false),
                     SessaoId = table.Column<int>(nullable: false),
                     VendaId = table.Column<int>(nullable: false)
                 },
@@ -241,6 +257,11 @@ namespace CinemaWebSystem.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Salas_CinemaId",
                 table: "Salas",
+                column: "CinemaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sessoes_CinemaId",
+                table: "Sessoes",
                 column: "CinemaId");
 
             migrationBuilder.CreateIndex(
